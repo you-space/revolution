@@ -12,6 +12,9 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
+            - name: get current date
+              run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
             - name: cache-dependence
               uses: actions/cache@v2
               id: cache-dependence
@@ -32,3 +35,4 @@ jobs:
                   BRANCH: theme
                   FOLDER: dist
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  MESSAGE: update ${{ steps.date.outputs.date }} - ${{github.sha}}
