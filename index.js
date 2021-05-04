@@ -31,12 +31,7 @@ const setup = {
 
         const appContent = await renderToString(app);
         const appHtml = fs.readFileSync(
-            path.join(
-                __dirname,
-                "dist",
-                "client-app",
-                clientManifest["index.html"]
-            ),
+            path.join(__dirname, "client-app", clientManifest["index.html"]),
             "utf-8"
         );
 
