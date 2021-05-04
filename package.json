@@ -10,7 +10,7 @@
         "lint": "vue-cli-service lint",
         "build:client": "vue-cli-service build --dest dist/client-app",
         "build:server": "SSR=1 vue-cli-service build --dest dist/server-app",
-        "copy-files": "cp index.js dist && cp package.json dist && cp package-lock.json dist",
+        "copy-files": "cp index.js dist && cp package.json dist && cp package-lock.json dist && cp ys-config.json dist",
         "build:entry": "npm run copy-files && npm install --only=production --prefix dist "
     },
     "dependencies": {
