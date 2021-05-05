@@ -1,0 +1,27 @@
+name: build
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        name: build
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: cache-dependence
+              uses: actions/cache@v2
+              id: cache-dependence
+              with:
+                  path: node_modules
+                  key: modules-${{ hashFiles('package-lock.json') }}
+
+            - name: create branch
+              uses: peterjgrainger/action-create-branch@v2.0.1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  branch: "release-notes"
