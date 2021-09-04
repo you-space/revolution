@@ -1,17 +1,50 @@
 <template>
-  <div class="r-infinite-scroll">
+  <div ref="element" class="h-full overflow-auto" @scroll="scroll">
     <slot />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
-  emits: ['load'],
-  setup(_, { emit }) {
-    emit('load')
-    return {}
+  props: {
+    disable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['start', 'end'],
+  setup(props, { emit }) {
+    const element = ref<HTMLElement>()
+    const isEnd = ref(false)
+
+    emit('start')
+
+    watch(
+      () => isEnd.value,
+      (value) => {
+        if (value && !props.disable) {
+          emit('end')
+        }
+      }
+    )
+
+    function scroll() {
+      if (!element.value) return
+
+      const { scrollHeight, scrollTop, clientHeight } = element.value
+
+      isEnd.value = scrollHeight - scrollTop === clientHeight
+
+      // el.scrollHeight - el.scrollTop - el.clientHeight < 1
+      // console.log('event', event)
+    }
+
+    return {
+      element,
+      scroll,
+    }
   },
 })
 </script>

@@ -100,11 +100,12 @@ export default defineComponent({
       relatedItems.value = data
     }
 
-    void setSidebarVideos()
+    watch(() => props.id, setVideo)
 
-    watch(() => props.id, setVideo, {
-      immediate: true,
-    })
+    if (!item.value) {
+      void setVideo()
+      void setSidebarVideos()
+    }
 
     onBeforeUnmount(() => {
       relatedItems.value = []

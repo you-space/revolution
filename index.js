@@ -42,6 +42,10 @@ module.exports = class Revolution {
       return 'Error app not found'
     }
 
-    return require('./render')(args)
+    return require('./render')({
+      ...args,
+      item: this.item,
+      type: this.type,
+    })
   }
 }

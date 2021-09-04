@@ -1,4 +1,4 @@
-import { createStore, useStore as basUseStore } from 'vuex'
+import { createStore as basCreateStore, useStore as basUseStore } from 'vuex'
 import { RootState } from './types'
 
 const context = require.context('@/store/modules', true, /\.ts/)
@@ -21,9 +21,11 @@ export function useStore() {
   return basUseStore<RootState>()
 }
 
-export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules,
-})
+export function createStore() {
+  return basCreateStore({
+    state: {},
+    mutations: {},
+    actions: {},
+    modules,
+  })
+}

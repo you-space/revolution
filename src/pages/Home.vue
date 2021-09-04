@@ -1,6 +1,6 @@
 <template>
-  <r-page padding>
-    <r-infinite-scroll :disable="disableScroll" :offset="250">
+  <r-infinite-scroll :disable="disableScroll" @end="addNextPage">
+    <r-page padding>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
         <template v-for="item in items" :key="item.id">
           <r-video-card
@@ -30,8 +30,8 @@
           <f-icon icon="spinner" />
         </div>
       </template>
-    </r-infinite-scroll>
-  </r-page>
+    </r-page>
+  </r-infinite-scroll>
 </template>
 
 <script lang="ts">
@@ -40,13 +40,13 @@ import { defineComponent, ref, computed, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { machine } from '@/plugins/you-space'
 import { ServerPaginationMeta } from '@/plugins/you-space/machine'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'Home',
   setup() {
     const store = useStore()
-
-    const page = ref(1)
+    const route = useRoute()
 
     const disableScroll = ref(false)
 
@@ -70,23 +70,23 @@ export default defineComponent({
 
     async function addNextPage() {
       const content = await machine.fetchItems({
-        page: page.value,
+        page: (meta.value.current_page || 0) + 1,
         serialize: true,
+        search: route.query.search,
       })
 
-      items.value = content.data
+      items.value = items.value.concat(content.data)
       meta.value = content.meta
-      page.value = content.meta.current_page
 
-      if (page.value === content.meta.last_page) {
+      if (meta.value.current_page === content.meta.last_page) {
         disableScroll.value = true
         return
       }
     }
 
-    onMounted(() => {
+    onMounted(async () => {
       if (items.value.length === 0) {
-        addNextPage()
+        await addNextPage()
       }
     })
 

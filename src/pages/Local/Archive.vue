@@ -1,7 +1,7 @@
 <template>
-  <r-page padding>
-    <h4 class="mb-4 font-bold text-2xl">Local videos: {{ meta.total }}</h4>
-    <r-infinite-scroll :disable="disableScroll" :offset="250">
+  <r-infinite-scroll :disable="disableScroll" @end="addNextPage">
+    <r-page padding>
+      <h4 class="mb-4 font-bold text-2xl">Local videos: {{ meta.total }}</h4>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
         <template v-for="item in items" :key="item.id">
           <r-video-card
@@ -19,8 +19,8 @@
           <f-icon icon="spinner" />
         </div>
       </template>
-    </r-infinite-scroll>
-  </r-page>
+    </r-page>
+  </r-infinite-scroll>
 </template>
 
 <script lang="ts">
@@ -34,7 +34,6 @@ export default defineComponent({
   setup() {
     const store = useStore()
 
-    const page = ref(1)
     const disableScroll = ref(false)
 
     const items = computed<any[]>({
@@ -57,14 +56,13 @@ export default defineComponent({
 
     async function addNextPage() {
       const content = await machine.fetchTypeItems('local-videos', {
-        page: page.value,
+        page: (meta.value.current_page || 0) + 1,
       })
 
-      items.value = content.data
+      items.value = items.value.concat(content.data)
       meta.value = content.meta
-      page.value = content.meta.current_page
 
-      if (page.value === content.meta.last_page) {
+      if (meta.value.current_page === content.meta.last_page) {
         disableScroll.value = true
         return
       }
