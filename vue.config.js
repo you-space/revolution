@@ -3,6 +3,7 @@ const nodeExternals = require('webpack-node-externals')
 const webpack = require('webpack')
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' && !process.env.SSR ? '/assets/' : '/',
   devServer: {
     proxy: {
       '/ys-admin': {

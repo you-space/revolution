@@ -1,5 +1,5 @@
 <template>
-  <r-layout>
+  <r-layout class="h-screen">
     <template #header>
       <r-header class="bg-white flex items-center">
         <r-btn class="mr-4" @click="toggleLeftDrawer" icon="bars" />
@@ -24,15 +24,17 @@
       </r-drawer>
     </template>
 
-    <r-container class="bg-gray-100 h-full">
+    <r-container class="bg-gray-100">
       <router-view />
     </r-container>
   </r-layout>
 </template>
 
 <script lang="ts">
+import { capitalize } from 'lodash'
 import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+
 export default defineComponent({
   name: 'Default',
   setup() {
@@ -46,24 +48,14 @@ export default defineComponent({
         to: { name: 'home' },
       },
       {
-        label: tm.t('latestVideos'),
+        label: capitalize(tm.t('entityVideos', ['youtube'])),
         icon: ['fab', 'telegram-plane'],
-        // to: { name: '404' },
+        to: { name: 'youtube-videos-archive' },
       },
       {
-        label: tm.t('recommendations'),
-        icon: 'play-circle',
-        // to: { name: '404' },
-      },
-      {
-        label: tm.t('favorites'),
-        icon: 'heart',
-        // to: { name: '404' },
-      },
-      {
-        label: tm.t('history'),
-        icon: 'history',
-        // to: { name: '404' },
+        label: capitalize(tm.t('entityVideos', ['local'])),
+        icon: ['fab', 'telegram-plane'],
+        to: { name: 'local-videos-archive' },
       },
     ]
 

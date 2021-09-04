@@ -58,7 +58,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
-import { useMachine, Video } from '@/plugins/you-space'
+// import { useMachine } from '@/plugins/you-space'
 
 export default defineComponent({
   props: {
@@ -68,24 +68,24 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const machine = useMachine()
-    const video = ref<Video | null>(null)
+    // const machine = useMachine()
+    const video = ref<any | null>(null)
     const comments = ref([])
-    const sidebarVideos = ref<Video[]>([])
+    const sidebarVideos = ref<any[]>([])
     const loading = ref(false)
 
     async function setVideo() {
-      loading.value = true
-      video.value = await machine.findVideo(props.videoId)
-      comments.value = await machine.fetchVideoComments(props.videoId)
-      setTimeout(async () => {
-        loading.value = false
-      }, 800)
+      // loading.value = true
+      // video.value = await machine.findVideo(props.videoId)
+      // comments.value = await machine.fetchVideoComments(props.videoId)
+      // setTimeout(async () => {
+      //   loading.value = false
+      // }, 800)
     }
 
     async function setSidebarVideos() {
-      const { data } = await machine.fetchVideos()
-      sidebarVideos.value = data
+      // const { data } = await machine.fetchVideos()
+      // sidebarVideos.value = data
     }
 
     void setSidebarVideos()

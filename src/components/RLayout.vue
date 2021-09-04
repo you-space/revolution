@@ -23,7 +23,7 @@ export default defineComponent({
 
     const height = computed(() => {
       if (header.value) {
-        return `calc(100% - ${header.value.clientHeight})`
+        return `calc(100% - ${header.value.clientHeight}px)`
       }
       return '100%'
     })

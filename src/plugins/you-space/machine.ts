@@ -1,48 +1,35 @@
 import axios from 'axios'
 
-const api = axios.create()
-
-export interface Video {
-  title: string
-  src: string
+export interface ServerPaginationMeta {
+  total: number
+  last_page: number
+  current_page: number
+}
+export interface ServerPagination<T> {
+  meta: ServerPaginationMeta
+  data: T[]
 }
 
-export interface FetchVideosFilter {
+interface Filters {
+  [prop: string]: any
   page?: number
-  visibility?: string
-}
-export interface FetchVideosResponse {
-  data: Video[]
-  meta: {
-    last_page: number
-    total: number
-  }
+  limit?: number
 }
 
-async function fetchVideos(filters?: FetchVideosFilter): Promise<FetchVideosResponse> {
-  const { data } = await api.get('/api/v1/videos', {
-    params: filters,
+export function createMachine(baseURL = '/api/v1') {
+  const api = axios.create({
+    baseURL,
   })
-  return data
-}
 
-async function findVideo(id: string) {
-  const { data } = await api.get<Video>(`api/v1/videos/${id}`)
-  return data
-}
+  async function fetchTypeItems<T = any>(typeName: string, filters?: Filters) {
+    const { data } = await api.get<ServerPagination<T>>(`types/${typeName}/items`, {
+      params: filters,
+    })
 
-async function fetchVideoComments(id: string) {
-  const { data } = await api.get(`api/v1/videos/${id}/comments`)
-  return data
-}
+    return data
+  }
 
-export function createMachine(baseURL = '/') {
-  api.defaults.baseURL = baseURL
   return {
-    fetchVideos,
-    findVideo,
-    fetchVideoComments,
+    fetchTypeItems,
   }
 }
-
-export default createMachine

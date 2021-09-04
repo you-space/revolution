@@ -4,7 +4,7 @@ import { createMachine } from './machine'
 
 const machineSymbol = Symbol('you-space-machine')
 
-export const machine = createMachine('http://localhost:3333')
+export const machine = createMachine()
 
 const machinePlugin: Plugin = {
   install(app) {
@@ -25,5 +25,3 @@ export function useMachine() {
 export default function ({ app }: BootArgs) {
   app.use(machinePlugin)
 }
-
-export * from './machine'

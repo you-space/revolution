@@ -7,6 +7,8 @@ const messages = {
   recommendations: 'Recommendations',
   favorites: 'Favorites',
   history: 'History',
+
+  entityVideos: '{0} videos',
 }
 
 export default messages
