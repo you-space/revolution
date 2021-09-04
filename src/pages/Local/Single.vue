@@ -1,10 +1,10 @@
 <template>
   <r-page class="flex justify-between" padding>
-    <div class="w-8/12 relative bg-white shadow-sm">
+    <div class="w-8/12 bg-white shadow-sm">
       <r-inner-loading v-model="loading" />
 
       <template v-if="!loading">
-        <r-video :src="item.src" width="w-full" style="height: 600px; max-width: 100%" />
+        <r-video :src="item.video" width="w-full" style="height: 600px; max-width: 100%" />
 
         <div class="p-6">
           <h2 class="text-2xl font-bold mb-6">{{ item.title }}</h2>
@@ -29,18 +29,16 @@
     <div class="w-3/12 px-2">
       <r-inner-loading v-model="loading" />
 
-      <div v-if="!loading" class="flex flex-wrap">
-        <template v-for="relatedItem in relatedItems" :key="relatedItem.id">
-          <r-video-card
-            class="mb-4"
-            :to="`/youtube/${relatedItem.id}`"
-            :title="relatedItem.title"
-            :description="relatedItem.description"
-            :img-src="relatedItem.thumbnailSrc"
-            :date="relatedItem.publishedAt"
-          />
-        </template>
-      </div>
+      <template v-for="relatedItem in relatedItems" :key="relatedItem.id">
+        <r-video-card
+          class="mb-4"
+          :to="`/youtube/${relatedItem.id}`"
+          :title="relatedItem.title"
+          :description="relatedItem.description"
+          :img-src="relatedItem.thumbnail"
+          :date="relatedItem.createdAt"
+        />
+      </template>
     </div>
   </r-page>
 </template>
@@ -64,26 +62,26 @@ export default defineComponent({
 
     const relatedItems = computed<any[]>({
       get() {
-        return store.state.youtube.data
+        return store.state.local.data
       },
       set(value) {
-        store.commit('youtube/setData', value)
+        store.commit('local/setData', value)
       },
     })
 
     const item = computed<any>({
       get() {
-        return store.state.youtube.current
+        return store.state.local.current
       },
       set(value) {
-        store.commit('youtube/setCurrent', value)
+        store.commit('local/setCurrent', value)
       },
     })
 
     async function setVideo() {
       loading.value = true
 
-      item.value = await machine.findItem('youtube-videos', props.id)
+      item.value = await machine.findItem('local-videos', props.id)
       // video.value = await machine.findVideo(props.videoId)
       // comments.value = await machine.fetchVideoComments(props.videoId)
 
@@ -93,7 +91,7 @@ export default defineComponent({
     }
 
     async function setSidebarVideos() {
-      const { data } = await machine.fetchTypeItems('youtube-videos', {
+      const { data } = await machine.fetchTypeItems('local-videos', {
         limit: 4,
         random: true,
       })

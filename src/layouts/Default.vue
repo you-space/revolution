@@ -1,28 +1,24 @@
 <template>
   <r-layout class="h-screen">
-    <template #header>
-      <r-header class="bg-white flex items-center">
-        <r-btn class="mr-4" @click="toggleLeftDrawer" icon="bars" />
-        <h1>You space</h1>
-      </r-header>
-    </template>
+    <r-header class="bg-white flex items-center">
+      <r-btn class="mr-4" @click="toggleLeftDrawer" icon="bars" />
+      <h1>You space</h1>
+    </r-header>
 
-    <template #drawer>
-      <r-drawer v-model="leftDrawerOpen">
-        <r-list class="text-blue-grey-500">
-          <template v-for="(item, index) in menuList" :key="index">
-            <r-item clickable :to="item.to">
-              <r-item-section side>
-                <f-icon :icon="item.icon" />
-              </r-item-section>
-              <r-item-section class="ml-4">
-                {{ item.label }}
-              </r-item-section>
-            </r-item>
-          </template>
-        </r-list>
-      </r-drawer>
-    </template>
+    <r-drawer v-model="leftDrawerOpen">
+      <r-list class="text-blue-grey-500">
+        <template v-for="(item, index) in menuList" :key="index">
+          <r-item clickable :to="item.to">
+            <r-item-section side>
+              <f-icon :icon="item.icon" />
+            </r-item-section>
+            <r-item-section class="ml-4">
+              {{ item.label }}
+            </r-item-section>
+          </r-item>
+        </template>
+      </r-list>
+    </r-drawer>
 
     <r-container class="bg-gray-100">
       <router-view />

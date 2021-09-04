@@ -14,7 +14,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const classes = ['r-page w-full h-full overflow-y-auto']
+    const classes = ['r-page']
 
     if (props.padding) {
       classes.push('p-6')

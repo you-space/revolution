@@ -5,7 +5,7 @@
       <div class="grid grid-cols-5 gap-5">
         <template v-for="item in items" :key="item.id">
           <r-video-card
-            :to="`/youtube/${item.id}`"
+            :to="`/local/${item.id}`"
             :title="item.title"
             :description="item.description"
             :img-src="item.thumbnail"
@@ -24,36 +24,52 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import { machine } from '@/plugins/you-space'
 import { ServerPaginationMeta } from '@/plugins/you-space/machine'
-
-const page = ref(1)
-const meta = ref<Partial<ServerPaginationMeta>>({
-  current_page: 1,
-})
-
-const items = ref<any[]>([])
-const disableScroll = ref(false)
-
-async function addNextPage() {
-  const content = await machine.fetchTypeItems('local-videos', {
-    page: page.value,
-  })
-
-  items.value = content.data
-  meta.value = content.meta
-  page.value = content.meta.current_page
-
-  if (page.value === content.meta.last_page) {
-    disableScroll.value = true
-    return
-  }
-}
+import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'Home',
   setup() {
+    const store = useStore()
+
+    const page = ref(1)
+    const disableScroll = ref(false)
+
+    const items = computed<any[]>({
+      get() {
+        return store.state.local.data
+      },
+      set(value) {
+        store.commit('local/setData', value)
+      },
+    })
+
+    const meta = computed<Partial<ServerPaginationMeta>>({
+      get() {
+        return store.state.local.meta
+      },
+      set(value) {
+        store.commit('local/setMeta', value)
+      },
+    })
+
+    async function addNextPage() {
+      const content = await machine.fetchTypeItems('local-videos', {
+        page: page.value,
+      })
+
+      items.value = content.data
+      meta.value = content.meta
+      page.value = content.meta.current_page
+
+      if (page.value === content.meta.last_page) {
+        disableScroll.value = true
+        return
+      }
+    }
+
     onMounted(() => {
       if (items.value.length === 0) {
         addNextPage()

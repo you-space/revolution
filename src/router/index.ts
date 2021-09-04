@@ -32,6 +32,12 @@ const routes: Array<RouteRecordRaw> = [
         props: true,
         component: () => import('@/pages/Local/Archive.vue'),
       },
+      {
+        path: 'local/:id',
+        name: 'local-videos-single',
+        props: true,
+        component: () => import('@/pages/Local/Single.vue'),
+      },
     ],
   },
   // Always leave this as last one,
