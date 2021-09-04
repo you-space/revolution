@@ -21,6 +21,14 @@ export function createMachine(baseURL = '/api/v1') {
     baseURL,
   })
 
+  async function fetchItems<T = any>(filters?: Filters) {
+    const { data } = await api.get<ServerPagination<T>>(`items`, {
+      params: filters,
+    })
+
+    return data
+  }
+
   async function fetchTypeItems<T = any>(typeName: string, filters?: Filters) {
     const { data } = await api.get<ServerPagination<T>>(`types/${typeName}/items`, {
       params: filters,
@@ -29,14 +37,16 @@ export function createMachine(baseURL = '/api/v1') {
     return data
   }
 
-  async function findItem<T = any>(typeName: string, id: string) {
+  async function findTypeItem<T = any>(typeName: string, id: string) {
     const { data } = await api.get<T>(`types/${typeName}/items/${id}`)
 
     return data
   }
 
   return {
+    fetchItems,
+
     fetchTypeItems,
-    findItem,
+    findTypeItem,
   }
 }

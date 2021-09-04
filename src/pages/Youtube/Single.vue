@@ -83,7 +83,7 @@ export default defineComponent({
     async function setVideo() {
       loading.value = true
 
-      item.value = await machine.findItem('youtube-videos', props.id)
+      item.value = await machine.findTypeItem('youtube-videos', props.id)
       // video.value = await machine.findVideo(props.videoId)
       // comments.value = await machine.fetchVideoComments(props.videoId)
 

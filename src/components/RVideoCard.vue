@@ -1,16 +1,16 @@
 <template>
-  <div class="shadow-md bg-white">
-    <router-link :to="to">
+  <div class="shadow-md bg-white flex flex-wrap">
+    <router-link :to="to" class="w-full">
       <r-img :src="imgSrc" width="w-full" height="h-48" />
     </router-link>
 
-    <div class="flex flex-wrap p-4">
-      <router-link :to="to">
-        <h2 class="text-base my-2 font-bold text-gray-500 hover:text-blue-500">
-          {{ title }}
-        </h2>
-      </router-link>
+    <router-link :to="to" class="px-4 pt-2 w-full">
+      <h2 class="text-base font-bold text-gray-500 hover:text-blue-500">
+        {{ title }}
+      </h2>
+    </router-link>
 
+    <div class="flex flex-wrap p-4 self-end w-full">
       <p v-if="description" class="w-full mb-4 text-sm">
         {{ description.slice(0, 50) }}
       </p>

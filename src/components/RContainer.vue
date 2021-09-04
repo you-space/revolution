@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-auto flex-1" :style="style">
+  <div class="overflow-auto lg:flex-1" :style="style">
     <slot />
   </div>
 </template>
