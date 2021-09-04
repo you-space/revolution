@@ -1,5 +1,5 @@
 <template>
-  <router-link :class="classes" exact-active-class="bg-gray-300" v-if="to" :to="to">
+  <router-link :class="classes" exact-active-class="bg-gray-200 font-bold" v-if="to" :to="to">
     <slot />
   </router-link>
   <li v-else :class="classes">
