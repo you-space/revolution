@@ -1,15 +1,15 @@
 <template>
-  <r-page class="flex justify-between" padding>
-    <div class="w-8/12 relative bg-white shadow-sm">
+  <r-page class="flex flex-wrap justify-between" padding>
+    <div class="w-full xl:w-8/12 mb-4 xl:mb-0 bg-white shadow-sm">
       <r-inner-loading v-model="loading" />
 
       <template v-if="!loading">
-        <r-video :src="item.src" width="w-full" style="height: 600px; max-width: 100%" />
+        <r-video :src="item.src" />
 
         <div class="p-6">
           <h2 class="text-2xl font-bold mb-6">{{ item.title }}</h2>
 
-          <p style="white-space: pre-line">
+          <p class="break-words whitespace-pre-line">
             {{ item.description }}
           </p>
         </div>
@@ -26,13 +26,13 @@
       </template>
     </div>
 
-    <div class="w-3/12 px-2">
+    <div class="flex-1">
       <r-inner-loading v-model="loading" />
 
-      <div v-if="!loading" class="flex flex-wrap">
+      <div v-if="!loading" class="flex flex-wrap justify-end">
         <template v-for="relatedItem in relatedItems" :key="relatedItem.id">
           <r-video-card
-            class="mb-4"
+            class="max-w-sm mx-0 md:mx-4 mb-4"
             :to="`/youtube/${relatedItem.id}`"
             :title="relatedItem.title"
             :description="relatedItem.description"

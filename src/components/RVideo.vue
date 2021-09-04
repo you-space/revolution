@@ -1,6 +1,14 @@
 <template>
-  <iframe :src="src" :class="[width, height]" frameborder="0"></iframe>
+  <video
+    v-if="src && !src.includes('youtube.com')"
+    :src="src"
+    class="r-video"
+    frameborder="0"
+    controls
+  />
+  <iframe v-else :src="src" frameborder="0" class="r-video" />
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue'
 
@@ -8,17 +16,24 @@ export default defineComponent({
   props: {
     src: {
       type: String,
-      required: true,
-    },
-    height: {
-      type: String,
-      default: 'h-64',
-    },
-    width: {
-      type: String,
-      required: true,
-      default: 'w-64',
+      default: undefined,
     },
   },
 })
 </script>
+
+<style lang="scss">
+.r-video {
+  width: 100%;
+  height: 180px;
+  background-color: theme('colors.black');
+
+  @media (min-width: theme('screens.sm')) {
+    height: 400px;
+  }
+
+  @media (min-width: theme('screens.xl')) {
+    height: 600px;
+  }
+}
+</style>
