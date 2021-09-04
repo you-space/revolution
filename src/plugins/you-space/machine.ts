@@ -29,7 +29,14 @@ export function createMachine(baseURL = '/api/v1') {
     return data
   }
 
+  async function findItem<T = any>(typeName: string, id: string) {
+    const { data } = await api.get<T>(`types/${typeName}/items/${id}`)
+
+    return data
+  }
+
   return {
     fetchTypeItems,
+    findItem,
   }
 }

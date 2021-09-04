@@ -24,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'youtube/:id',
         name: 'youtube-videos-single',
         props: true,
-        component: () => import('@/pages/VideoSingle.vue'),
+        component: () => import('@/pages/Youtube/Single.vue'),
       },
       {
         path: 'local',

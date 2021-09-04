@@ -24,36 +24,52 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, computed, onMounted } from 'vue'
 import { machine } from '@/plugins/you-space'
 import { ServerPaginationMeta } from '@/plugins/you-space/machine'
-
-const page = ref(1)
-const meta = ref<Partial<ServerPaginationMeta>>({
-  current_page: 1,
-})
-
-const items = ref<any[]>([])
-const disableScroll = ref(false)
-
-async function addNextPage() {
-  const content = await machine.fetchTypeItems('youtube-videos', {
-    page: page.value,
-  })
-
-  items.value = content.data
-  meta.value = content.meta
-  page.value = content.meta.current_page
-
-  if (page.value === content.meta.last_page) {
-    disableScroll.value = true
-    return
-  }
-}
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Home',
   setup() {
+    const store = useStore()
+
+    const page = ref(1)
+    const disableScroll = ref(false)
+
+    const items = computed<any[]>({
+      get() {
+        return store.state.youtube.data
+      },
+      set(value) {
+        store.commit('youtube/setData', value)
+      },
+    })
+
+    const meta = computed<Partial<ServerPaginationMeta>>({
+      get() {
+        return store.state.youtube.meta
+      },
+      set(value) {
+        store.commit('youtube/setMeta', value)
+      },
+    })
+
+    async function addNextPage() {
+      const content = await machine.fetchTypeItems('youtube-videos', {
+        page: page.value,
+      })
+
+      items.value = content.data
+      meta.value = content.meta
+      page.value = content.meta.current_page
+
+      if (page.value === content.meta.last_page) {
+        disableScroll.value = true
+        return
+      }
+    }
+
     onMounted(() => {
       if (items.value.length === 0) {
         addNextPage()
