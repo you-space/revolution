@@ -9,7 +9,9 @@ context.keys().forEach((filename) => {
   const [_, moduleName, key] = filename.replace('.ts', '').split('/')
 
   if (!modules[moduleName]) {
-    modules[moduleName] = {}
+    modules[moduleName] = {
+      namespaced: true,
+    }
   }
 
   modules[moduleName][key] = context(filename).default

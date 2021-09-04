@@ -3,10 +3,10 @@ import { MutationTree } from 'vuex'
 import { ItemState } from './state'
 
 const mutations: MutationTree<ItemState> = {
-  SET_DATA(state, data: any[]) {
+  setData(state, data: any[]) {
     state.data = data
   },
-  SET_META(state, meta: Partial<ServerPaginationMeta>) {
+  setMeta(state, meta: Partial<ServerPaginationMeta>) {
     state.meta = meta
   },
 }

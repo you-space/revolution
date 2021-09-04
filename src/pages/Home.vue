@@ -45,7 +45,7 @@ export default defineComponent({
         return store.state.item.data
       },
       set(value) {
-        store.commit('SET_DATA', value)
+        store.commit('item/setData', value)
       },
     })
 
@@ -54,23 +54,23 @@ export default defineComponent({
         return store.state.item.meta
       },
       set(value) {
-        store.commit('SET_META', value)
+        store.commit('item/setMeta', value)
       },
     })
 
     async function addNextPage() {
-      const { data, meta } = await machine.fetchTypeItems('youtube-videos', {
+      const content = await machine.fetchTypeItems('youtube-videos', {
         page: page.value,
       })
 
-      items.value = data
+      items.value = content.data
+      meta.value = content.meta
+      page.value = content.meta.current_page
 
-      if (page.value === meta.last_page) {
+      if (page.value === content.meta.last_page) {
         disableScroll.value = true
         return
       }
-
-      page.value = meta.current_page
     }
 
     onMounted(() => {
